@@ -1,0 +1,556 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    /* CSS Variables for theming */
+    :root {
+      --color-bg: #ffffff;
+      --color-text: #374151; /* dark slate gray */
+      --color-text-muted: #6b7280; /* neutral gray */
+      --color-primary: #4f46e5; /* indigo 600 */
+      --color-secondary: #f59e0b; /* amber 500 */
+      --color-tertiary: #10b981; /* emerald 500 */
+      --color-primary-light: #a5b4fc; /* indigo light highlight */
+      --color-card-bg: #f9fafb;
+      --color-shadow: rgba(0, 0, 0, 0.05);
+
+      --radius: 0.75rem;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-base: 'Poppins', sans-serif;
+    }
+
+    body.dark {
+      --color-bg: #121212;
+      --color-text: #e0e0e0;
+      --color-text-muted: #9ca3af;
+      --color-primary: #818cf8;
+      --color-secondary: #fbbf24; /* amber 400 */
+      --color-tertiary: #34d399; /* emerald 400 */
+      --color-primary-light: #a5b4fc;
+      --color-card-bg: #1f2937;
+      --color-shadow: rgba(0, 0, 0, 0.7);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-base);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      scroll-behavior: smooth;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 1200px;
+      padding: 2rem 1rem 4rem;
+      box-sizing: border-box;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      scroll-margin-top: 5rem;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      max-width: 1200px;
+      background: var(--color-bg);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px var(--color-shadow);
+      z-index: 10;
+      user-select: none;
+      backdrop-filter: saturate(180%) blur(12px);
+      transition: background-color var(--transition);
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 2.5rem;
+      color: var(--color-primary);
+      cursor: default;
+      letter-spacing: 1.2px;
+      animation: bounce 1s infinite alternate;
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    nav button, nav a {
+      background: none;
+      border: none;
+      color: var(--color-text-muted);
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 0.35rem 0.8rem;
+      border-radius: var(--radius);
+      transition: 
+        background-color var(--transition),
+        color var(--transition),
+        transform 0.25s ease;
+      user-select: none;
+    }
+    nav button:hover, nav a:hover,
+    nav button:focus, nav a:focus {
+      background-color: var(--color-secondary);
+      color: var(--color-bg);
+      outline: none;
+      transform: scale(1.05);
+    }
+
+    nav button.active {
+      color: var(--color-primary);
+      font-weight: 700;
+      cursor: default;
+      background-color: transparent;
+      transform: none;
+    }
+
+    /* Theme toggle */
+    #theme-toggle {
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      transition: transform 0.3s ease;
+    }
+    #theme-toggle:hover, #theme-toggle:focus {
+      outline: none;
+      transform: scale(1.2);
+      color: var(--color-primary-light);
+    }
+
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    section {
+      display: none;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    section.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h1.section-title {
+      font-weight: 800;
+      font-size: 3.5rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.1;
+      color: var(--color-primary);
+      user-select: none;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    /* Dashboard Cards Container */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2.2rem;
+    }
+
+    /* Individual Card Style */
+    .card {
+      background-color: var(--color-card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 20px var(--color-shadow);
+      padding: 2rem 2rem 2.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: 
+        box-shadow var(--transition), 
+        transform var(--transition);
+      cursor: default;
+      user-select: none;
+    }
+    .card:hover {
+      box-shadow: 0 14px 32px var(--color-shadow);
+      transform: translateY(-3px);
+      animation: pulse 1s infinite alternate;
+    }
+    .card:focus {
+      outline-offset: 3px;
+      outline: 3px solid var(--color-primary-light);
+      transform: translateY(-3px);
+    }
+
+    .card h2 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin: 0.25rem 0 0.5rem 0;
+      color: var(--color-primary);
+      user-select: text;
+    }
+    .card p {
+      margin: 0;
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--color-text-muted);
+      user-select: text;
+    }
+
+    /* Badges container */
+    .badges {
+      display: flex;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 0.85rem;
+      max-width: 320px;
+    }
+
+    /* Badge style - simple monochrome line icon plus label */
+    .badge {
+      background: transparent;
+      border: 2.2px solid var(--color-primary);
+      color: var(--color-primary);
+      border-radius: 1.6rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 0.4rem 1rem 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      user-select: none;
+      transition: 
+        background-color var(--transition),
+        color var(--transition),
+        transform 0.25s ease,
+        opacity 0.5s ease; /* Added for dynamic appearance */
+    }
+    .badge:hover {
+      background-color: var(--color-primary);
+      color: var(--color-bg);
+      cursor: default;
+      transform: scale(1.06);
+    }
+    /* Style for unlocked badges */
+    .badge.unlocked {
+      background-color: var(--color-primary);
+      color: var(--color-bg);
+      animation: badgePopIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    /* Badge pop-in animation */
+    @keyframes badgePopIn {
+      0% {
+        transform: scale(0.5) translateY(20px);
+        opacity: 0;
+      }
+      70% {
+        transform: scale(1.1) translateY(-5px);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* Badge icon - use inline SVG */
+    .badge svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      user-select: none;
+    }
+
+    /* Mood display */
+    .mood {
+      font-weight: 700;
+      font-size: 4rem;
+      margin-top: 0.6rem;
+      user-select: none;
+      color: var(--color-primary);
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+      transition: transform 0.3s ease;
+    }
+    .mood:hover {
+      transform: scale(1.1);
+      cursor: default;
+    }
+
+    /* Level Progress Bar */
+    .level-progress-container {
+      width: 100%;
+      height: 1.5rem;
+      background-color: var(--color-card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 1.5rem;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .level-progress-bar {
+      height: 100%;
+      background-color: var(--color-secondary);
+      width: 0%; /* Initial width */
+      border-radius: var(--radius);
+      transition: width 0.5s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--color-bg);
+      font-size: 0.9rem;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    /* Check-in form */
+    form.checkin-form {
+      max-width: 450px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.6rem;
+      margin-top: 1.6rem;
+      user-select: none;
+    }
+
+    .form-group {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    label {
+      font-weight: 700;
+      color: var(--color-text);
+      user-select: text;
+    }
+
+    /* XP Range Value Display */
+    .xp-value-display {
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-left: 0.5rem;
+      min-width: 60px; /* Ensure space for numbers */
+      text-align: right;
+    }
+    .xp-range-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--color-primary-light);
+      outline: none;
+      transition: background-color var(--transition);
+      cursor: pointer;
+      box-shadow: inset 0 0 8px rgba(79,70,229,0.35);
+      user-select: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      cursor: pointer;
+      transition: background-color var(--transition), box-shadow 0.25s ease;
+      border: none;
+      margin-top: -8px;
+      box-shadow: 0 2px 8px rgba(79,70,229,0.7);
+    }
+    input[type="range"]:focus::-webkit-slider-thumb {
+      background: var(--color-primary-light);
+      outline: none;
+      box-shadow: 0 0 10px 4px var(--color-primary-light);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 8px rgba(79,70,229,0.7);
+    }
+
+    select {
+      padding: 0.55rem 0.75rem;
+      font-size: 1.1rem;
+      border-radius: var(--radius);
+      border: 2.5px solid var(--color-primary-light);
+      background: var(--color-card-bg);
+      color: var(--color-text);
+      cursor: pointer;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      user-select: none;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.03);
+    }
+    select:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 8px 2px var(--color-primary-light);
+      outline: none;
+    }
+
+    button.submit-btn {
+      padding: 0.85rem 1.8rem;
+      font-weight: 800;
+      font-size: 1.25rem;
+      border-radius: var(--radius);
+      border: none;
+      background-color: var(--color-tertiary);
+      color: var(--color-bg);
+      cursor: pointer;
+      transition: 
+        background-color var(--transition),
+        box-shadow var(--transition),
+        transform 0.25s ease;
+      align-self: flex-start;
+      user-select: none;
+      box-shadow: 0 6px 15px rgba(79,70,229,0.45);
+    }
+    button.submit-btn:hover, button.submit-btn:focus {
+      background-color: #059669; /* darker emerald */
+      outline: none;
+      box-shadow: 0 8px 24px rgba(55,48,163,0.7);
+      transform: scale(1.05);
+    }
+
+    /* Motivational feedback pop-up (toast) */
+    #toast {
+      position: fixed;
+      bottom: 2.4rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      background-color: var(--color-tertiary);
+      color: var(--color-bg);
+      padding: 1.3rem 2.4rem;
+      border-radius: 2.4rem;
+      font-weight: 700;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+      user-select: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+      z-index: 1000;
+      max-width: 90vw;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* User Profile Section */
+    .profile-info {
+      background-color: var(--color-card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 20px var(--color-shadow);
+      padding: 2rem;
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .profile-info h2 {
+      font-size: 2.2rem;
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-info p {
+      font-size: 1.1rem;
+      color: var(--color-text);
+      margin: 0;
+    }
+
+    /* Accessibility helper class */
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0,0,0,0) !important;
+      border: 0 !important;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      h1.section-title {
+        font-size: 2.75rem;
+      }
+      .card {
+        padding: 1.6rem 1.2rem 1.8rem;
+      }
+      nav {
+        gap: 1.4rem;
+      }
+      nav button, nav a {
+        font-size: 1rem;
+      }
+      button.submit-btn {
+        width: 100%;
+        padding: 1rem 0;
+      }
+      form.checkin-form {
+        max-width: 100%;
+      }
+    }
+
+    /* Animations */
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1.05);
+      }
+    }
+  
